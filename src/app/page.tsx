@@ -3,17 +3,25 @@
 import { useState } from "react";
 import { 
   Mail, 
-  Github, 
   Share2, 
   Check, 
-  Sparkles, 
-  Code2, 
-  ExternalLink,
-  Zap,
-  Terminal,
-  Heart,
-  Laptop
+  MessageSquare,
+  ArrowUpRight,
+  ChevronDown
 } from "lucide-react";
+
+function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg
+      role="img"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+    >
+      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+    </svg>
+  );
+}
 
 export default function ProfilePage() {
   const [copied, setCopied] = useState(false);
@@ -25,203 +33,207 @@ export default function ProfilePage() {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       } catch {
-        alert("링크가 복사되었습니다!");
+        alert("링크가 복사되었습니다.");
       }
     }
   };
 
   return (
-    <main className="relative min-h-screen bg-[#FFFDF5] text-black flex items-center justify-center p-4 sm:p-8 overflow-hidden select-none">
-      {/* 네오브루탈리즘 격자 도트 배경 */}
-      <div 
-        className="absolute inset-0 pointer-events-none opacity-40"
-        style={{
-          backgroundImage: "radial-gradient(#000000 1.5px, transparent 1.5px)",
-          backgroundSize: "24px 24px"
-        }}
-      />
-
-      {/* 배경 장식 스티커 / 기하학 도형들 (데스크톱 와이드 화면 xl(1280px)+에서만 안전하게 노출하여 768px 태블릿 짤림 방지) */}
-      <div className="absolute top-10 left-10 hidden xl:flex items-center gap-2 bg-[#FFE600] border-2 border-black px-3 py-1 rounded-md shadow-[3px_3px_0px_0px_#000] -rotate-6 font-black text-xs">
-        <Sparkles className="w-3.5 h-3.5 text-black" />
-        <span>VIBE CODING MODE</span>
-      </div>
-
-      <div className="absolute bottom-12 left-12 hidden xl:block bg-[#A3E635] border-2 border-black px-3.5 py-1.5 rounded-md shadow-[4px_4px_0px_0px_#000] rotate-3 font-mono text-xs font-bold">
-        {"<hello-world />"}
-      </div>
-
-      <div className="absolute top-16 right-16 hidden xl:flex items-center gap-1.5 bg-[#FF6B6B] text-white border-2 border-black px-3 py-1 rounded-md shadow-[3px_3px_0px_0px_#000] rotate-6 font-black text-xs">
-        <Zap className="w-3.5 h-3.5 fill-current" />
-        <span>POWERED BY AGY</span>
-      </div>
-
-      <div className="absolute bottom-14 right-16 hidden xl:block bg-[#BAE6FD] border-2 border-black px-3 py-1.5 rounded-md shadow-[3px_3px_0px_0px_#000] -rotate-3 font-mono text-xs font-bold">
-        ★ NEXT.JS 15
-      </div>
-
-      {/* 메인 프로필 윈도우 카드 */}
-      <div className="relative w-full max-w-md bg-white border-4 border-black rounded-3xl shadow-[8px_8px_0px_0px_#000] sm:shadow-[10px_10px_0px_0px_#000] overflow-hidden transition-transform duration-200">
-        
-        {/* 상단 윈도우 탑바 (Mac/Retro OS 스타일) */}
-        <div className="bg-[#FFE600] border-b-4 border-black px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="w-3.5 h-3.5 rounded-full bg-[#FF5F56] border-2 border-black inline-block shadow-[1px_1px_0px_0px_#000]" />
-            <span className="w-3.5 h-3.5 rounded-full bg-[#FFBD2E] border-2 border-black inline-block shadow-[1px_1px_0px_0px_#000]" />
-            <span className="w-3.5 h-3.5 rounded-full bg-[#27C93F] border-2 border-black inline-block shadow-[1px_1px_0px_0px_#000]" />
+    <div className="min-h-screen bg-white text-[#171A20] flex flex-col justify-between selection:bg-[#3E6AE1] selection:text-white relative">
+      
+      {/* 1. Tesla Inspired Floating Navigation */}
+      <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md transition-colors duration-300">
+        <div className="max-w-[1383px] mx-auto px-6 h-14 flex items-center justify-between">
+          
+          {/* Wordmark (Spaced Uppercase) */}
+          <div className="flex items-center">
+            <span className="font-medium text-[13px] tracking-[0.22em] text-[#171A20] select-none">
+              H U I W O N &nbsp; J U N G
+            </span>
           </div>
-          <span className="font-mono text-xs font-black tracking-wider bg-black text-[#FFE600] px-2.5 py-0.5 rounded border border-black">
-            bokbok.profile
-          </span>
-          <div className="flex items-center gap-1 font-mono text-xs font-bold text-black">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block" />
-            <span className="text-[11px]">ONLINE</span>
+
+          {/* Center Category Links */}
+          <nav className="hidden md:flex items-center gap-1">
+            <a 
+              href="#overview" 
+              className="text-[14px] font-medium text-[#171A20] px-3.5 py-1 rounded-[4px] hover:bg-black/5 transition-colors duration-300"
+            >
+              Overview
+            </a>
+            <a 
+              href="#experience" 
+              className="text-[14px] font-medium text-[#171A20] px-3.5 py-1 rounded-[4px] hover:bg-black/5 transition-colors duration-300"
+            >
+              Experience
+            </a>
+            <a 
+              href="https://github.com/huiwon77" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-[14px] font-medium text-[#171A20] px-3.5 py-1 rounded-[4px] hover:bg-black/5 transition-colors duration-300 flex items-center gap-1"
+            >
+              GitHub
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#5C5E62]" />
+            </a>
+          </nav>
+
+          {/* Right Action Menu */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleCopyLink}
+              type="button"
+              className="text-[14px] font-medium text-[#171A20] px-3 py-1 rounded-[4px] hover:bg-black/5 transition-colors duration-300 flex items-center gap-1.5"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-4 h-4 text-[#3E6AE1]" />
+                  <span className="text-[#3E6AE1]">복사됨</span>
+                </>
+              ) : (
+                <>
+                  <Share2 className="w-4 h-4 text-[#5C5E62]" />
+                  <span>공유</span>
+                </>
+              )}
+            </button>
+          </div>
+
+        </div>
+      </header>
+
+      {/* 2. Full-Viewport Hero Section (Radical Subtraction & Pure Whitespace) */}
+      <main id="overview" className="flex-1 flex flex-col justify-between items-center px-6 pt-12 pb-24 text-center max-w-[1383px] mx-auto w-full">
+        
+        {/* Top: Model & Title Hierarchy */}
+        <div className="pt-4 sm:pt-8 flex flex-col items-center">
+          <p className="text-[14px] font-medium text-[#5C5E62] tracking-normal mb-1">
+            Vibe Coding & Learner
+          </p>
+          <h1 className="text-[32px] sm:text-[40px] font-medium text-[#171A20] tracking-normal leading-[1.2]">
+            정희원
+          </h1>
+          <p className="text-[14px] font-normal text-[#393C41] mt-2 max-w-md leading-[1.43] break-keep">
+            안녕하세요! 바이브 코딩을 배우고 있는 대학생입니다. 복잡함을 덜어내고 본질에 집중하는 웹 경험을 탐구합니다.
+          </p>
+        </div>
+
+        {/* Center: Clean Architectural Presentation / Spec Showcase */}
+        <div className="my-auto py-10 sm:py-16 flex flex-col items-center">
+          {/* Minimalist Profile Silhouette Frame */}
+          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-[#F4F4F4] flex items-center justify-center mb-8 border border-[#EEEEEE]">
+            <span className="text-[28px] sm:text-[32px] font-medium text-[#171A20] select-none">
+              정
+            </span>
+          </div>
+
+          {/* Tesla-Style Key Specifications Bar */}
+          <div className="flex items-center justify-center gap-8 sm:gap-16 pt-2">
+            <div className="flex flex-col items-center">
+              <span className="text-[20px] sm:text-[24px] font-medium text-[#171A20] leading-none">
+                학부생
+              </span>
+              <span className="text-[12px] font-normal text-[#5C5E62] mt-2">
+                Status
+              </span>
+            </div>
+
+            <div className="w-[1px] h-8 bg-[#EEEEEE]" />
+
+            <div className="flex flex-col items-center">
+              <span className="text-[20px] sm:text-[24px] font-medium text-[#171A20] leading-none">
+                Next.js 15
+              </span>
+              <span className="text-[12px] font-normal text-[#5C5E62] mt-2">
+                Core Stack
+              </span>
+            </div>
+
+            <div className="w-[1px] h-8 bg-[#EEEEEE]" />
+
+            <div className="flex flex-col items-center">
+              <span className="text-[20px] sm:text-[24px] font-medium text-[#171A20] leading-none">
+                웹 개발
+              </span>
+              <span className="text-[12px] font-normal text-[#5C5E62] mt-2">
+                Focus Area
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* 카드 본문 */}
-        <div className="p-6 sm:p-8 flex flex-col items-center text-center">
-
-          {/* 프로필 아바타 영역 */}
-          <div className="relative mb-5">
-            <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl bg-[#FFE600] border-4 border-black shadow-[5px_5px_0px_0px_#000] flex items-center justify-center -rotate-2 hover:rotate-0 transition-transform duration-200">
-              <span className="text-5xl sm:text-6xl font-black text-black tracking-tight select-none">
-                정
-              </span>
-            </div>
-            {/* 아바타 부착 스티커 */}
-            <span className="absolute -bottom-2 -right-3 flex items-center gap-1 bg-[#FF6B6B] text-white border-2 border-black shadow-[2px_2px_0px_0px_#000] px-2 py-0.5 rounded-md text-xs font-black rotate-12">
-              <Sparkles className="w-3.5 h-3.5 fill-current" />
-              <span>DEV</span>
-            </span>
-          </div>
-
-          {/* 이름 & 핸들 */}
-          <h1 className="text-3xl sm:text-4xl font-black text-black tracking-tight mt-1">
-            정희원
-          </h1>
-          <div className="flex items-center gap-2 mt-2">
-            <span className="bg-black text-white text-xs font-mono font-bold px-2.5 py-0.5 rounded-md">
-              @bokbok
-            </span>
-            <span className="bg-[#BAE6FD] text-black border-2 border-black text-xs font-bold px-2.5 py-0.5 rounded-md shadow-[2px_2px_0px_0px_#000]">
-              대학생
-            </span>
-          </div>
-
-          {/* 배지 (롤 스티커) */}
-          <div className="inline-flex items-center gap-1.5 mt-3.5 px-3.5 py-1.5 rounded-lg bg-[#A3E635] text-black border-2 border-black text-xs font-black shadow-[3px_3px_0px_0px_#000] -rotate-1 hover:rotate-0 transition-transform">
-            <Code2 className="w-4 h-4 stroke-[2.5]" />
-            <span>Vibe Coding & Learner</span>
-          </div>
-
-          {/* 소개글 (네오브루탈 메모지 스타일) */}
-          <div className="relative w-full mt-5 bg-[#FEF08A] border-3 border-black rounded-2xl p-4 shadow-[4px_4px_0px_0px_#000] rotate-[0.5deg]">
-            {/* 상단 마스킹 테이프 데코 */}
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-5 bg-white/80 border border-black/30 shadow-xs -rotate-2 pointer-events-none" />
-            <p className="text-black font-bold text-sm sm:text-base leading-relaxed break-keep">
-              안녕하세요! 바이브 코딩을 배우고 있는 대학생입니다. 코드로 새로운 가능성을 만들고 성장하는 여정을 즐깁니다!
-            </p>
-          </div>
-
-          {/* 키워드 태그 스티커 칩들 */}
-          <div className="flex flex-wrap justify-center gap-2 mt-5">
-            <span className="px-3 py-1 rounded-lg bg-[#FED7AA] border-2 border-black text-black font-black text-xs shadow-[3px_3px_0px_0px_#000] -rotate-2 hover:rotate-0 hover:-translate-y-0.5 transition-all">
-              #대학생
-            </span>
-            <span className="px-3 py-1 rounded-lg bg-[#E9D5FF] border-2 border-black text-black font-black text-xs shadow-[3px_3px_0px_0px_#000] rotate-2 hover:rotate-0 hover:-translate-y-0.5 transition-all">
-              #바이브코딩
-            </span>
-            <span className="px-3 py-1 rounded-lg bg-[#BAE6FD] border-2 border-black text-black font-black text-xs shadow-[3px_3px_0px_0px_#000] -rotate-1 hover:rotate-0 hover:-translate-y-0.5 transition-all">
-              #웹개발
-            </span>
-            <span className="px-3 py-1 rounded-lg bg-[#BBF7D0] border-2 border-black text-black font-black text-xs shadow-[3px_3px_0px_0px_#000] rotate-1 hover:rotate-0 hover:-translate-y-0.5 transition-all">
-              #프론트엔드
-            </span>
-          </div>
-
-          {/* 미니 스탯 / 인포 박스 그리드 */}
-          <div className="grid grid-cols-3 gap-2.5 w-full mt-5">
-            <div className="bg-[#F8FAFC] border-2 border-black rounded-xl p-2.5 shadow-[3px_3px_0px_0px_#000] flex flex-col items-center">
-              <Laptop className="w-4 h-4 text-black mb-1 stroke-[2.5]" />
-              <span className="text-[10px] font-mono font-bold text-slate-500">ROLE</span>
-              <span className="text-xs font-black text-black">Learner</span>
-            </div>
-            <div className="bg-[#F8FAFC] border-2 border-black rounded-xl p-2.5 shadow-[3px_3px_0px_0px_#000] flex flex-col items-center">
-              <Terminal className="w-4 h-4 text-black mb-1 stroke-[2.5]" />
-              <span className="text-[10px] font-mono font-bold text-slate-500">TECH</span>
-              <span className="text-xs font-black text-black">Next.js</span>
-            </div>
-            <div className="bg-[#F8FAFC] border-2 border-black rounded-xl p-2.5 shadow-[3px_3px_0px_0px_#000] flex flex-col items-center">
-              <Heart className="w-4 h-4 text-rose-500 fill-rose-500 mb-1" />
-              <span className="text-[10px] font-mono font-bold text-slate-500">MOOD</span>
-              <span className="text-xs font-black text-black">Excited</span>
-            </div>
-          </div>
-
-          {/* 네오브루탈 구분선 */}
-          <div className="w-full h-1 bg-black my-6 rounded-full" />
-
-          {/* 액션 버튼 영역 */}
-          <div className="w-full flex flex-col gap-3">
-            {/* 이메일 보내기 버튼 (Gmail 메일쓰기 직행 링크) */}
+        {/* Bottom Action Section: Signature Tesla Button Pair & Sub-link */}
+        <div className="w-full max-w-[420px] flex flex-col items-center gap-3">
+          
+          {/* Two-Button Pair (Electric Blue Primary + Light Ash Secondary) */}
+          <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-3">
+            {/* Primary CTA (Electric Blue) */}
             <a
               href="https://mail.google.com/mail/?view=cm&fs=1&to=a0507072@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-3.5 px-4 rounded-xl bg-[#FFE600] text-black font-black text-sm border-3 border-black shadow-[4px_4px_0px_0px_#000] hover:shadow-[6px_6px_0px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-[1px_1px_0px_0px_#000] flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className="w-full sm:w-[200px] h-[40px] bg-[#3E6AE1] hover:bg-[#345ac2] text-white text-[14px] font-medium rounded-[4px] flex items-center justify-center gap-2 transition-colors duration-300"
             >
-              <Mail className="w-4 h-4 stroke-[2.5]" />
+              <Mail className="w-4 h-4" />
               <span>이메일 보내기</span>
-              <ExternalLink className="w-3.5 h-3.5 stroke-[2.5]" />
             </a>
 
-            {/* 서브 버튼 2열 */}
-            <div className="grid grid-cols-2 gap-3">
-              {/* GitHub 버튼 */}
-              <a
-                href="https://github.com/huiwon77"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="py-3 px-3 rounded-xl bg-white text-black font-black text-xs sm:text-sm border-3 border-black shadow-[4px_4px_0px_0px_#000] hover:shadow-[6px_6px_0px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-[1px_1px_0px_0px_#000] flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-              >
-                <Github className="w-4 h-4 stroke-[2.5]" />
-                <span>GitHub</span>
-                <ExternalLink className="w-3 h-3 stroke-[2.5]" />
-              </a>
-
-              {/* 링크 복사 버튼 (비비드 시안 / 성공 시 민트) */}
-              <button
-                onClick={handleCopyLink}
-                type="button"
-                className={`py-3 px-3 rounded-xl font-black text-xs sm:text-sm border-3 border-black shadow-[4px_4px_0px_0px_#000] hover:shadow-[6px_6px_0px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-[1px_1px_0px_0px_#000] flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-                  copied 
-                    ? "bg-[#86EFAC] text-black" 
-                    : "bg-[#67E8F9] text-black"
-                }`}
-              >
-                {copied ? (
-                  <>
-                    <Check className="w-4 h-4 stroke-[3]" />
-                    <span>복사 완료!</span>
-                  </>
-                ) : (
-                  <>
-                    <Share2 className="w-4 h-4 stroke-[2.5]" />
-                    <span>프로필 공유</span>
-                  </>
-                )}
-              </button>
-            </div>
+            {/* Secondary CTA (Light Ash) */}
+            <a
+              href="https://github.com/huiwon77"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-[200px] h-[40px] bg-[#F4F4F4] hover:bg-[#EAEAEA] text-[#393C41] text-[14px] font-medium rounded-[4px] flex items-center justify-center gap-2 transition-colors duration-300"
+            >
+              <GithubIcon className="w-4 h-4" />
+              <span>GitHub 보기</span>
+            </a>
           </div>
 
-          {/* 하단 푸터 텍스트 */}
-          <p className="mt-6 font-mono text-[11px] font-bold text-slate-500">
-            CRAFTED WITH 🖤 & VIBE CODING
-          </p>
+          {/* Tertiary Sub-link (Pewter with Underline Animation) */}
+          <button
+            onClick={handleCopyLink}
+            type="button"
+            className="text-[14px] font-normal text-[#5C5E62] hover:text-[#171A20] hover:underline pt-2 transition-colors duration-300 flex items-center gap-1.5"
+          >
+            {copied ? (
+              <span className="text-[#3E6AE1] font-medium">프로필 링크가 클립보드에 복사되었습니다</span>
+            ) : (
+              <span>프로필 링크 복사하기</span>
+            )}
+          </button>
+        </div>
+
+      </main>
+
+      {/* 3. Persistent Bottom Bar (Tesla "Ask a Question" Bar Concept) */}
+      <footer className="w-full bg-white border-t border-[#EEEEEE] py-3.5 px-6 sticky bottom-0 z-40">
+        <div className="max-w-[1383px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          
+          {/* Left: Chat / Inquiry Prompt */}
+          <div className="flex items-center gap-2.5 text-[#5C5E62]">
+            <MessageSquare className="w-4 h-4 text-[#8E8E8E]" />
+            <span className="text-[13px] font-normal text-[#8E8E8E]">
+              프로젝트 제안이나 협업 문의가 있으신가요?
+            </span>
+          </div>
+
+          {/* Right: Quick Action Link */}
+          <div className="flex items-center gap-4">
+            <a
+              href="mailto:a0507072@gmail.com"
+              className="text-[13px] font-medium text-[#3E6AE1] hover:underline transition-colors duration-300"
+            >
+              a0507072@gmail.com
+            </a>
+            <span className="text-[#D0D1D2] hidden sm:inline">|</span>
+            <span className="text-[12px] font-normal text-[#8E8E8E] hidden sm:inline">
+              Inspired by Tesla Design System
+            </span>
+          </div>
 
         </div>
-      </div>
-    </main>
+      </footer>
+
+    </div>
   );
 }
