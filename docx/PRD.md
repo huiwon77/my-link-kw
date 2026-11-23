@@ -62,21 +62,33 @@
 - **자간 (Letter Spacing)**: 인위적인 음수 자간(negative tracking) 없이 모든 레벨에서 `normal` 유지
 - **대소문자 태도**: 소문자 중심의 차분하고 절제된 톤앤매너 유지 (과도한 대문자 변환 지양)
 
-### 2.4 컴포넌트 스타일링 규격 (shadcn/ui Customization)
+### 2.4 컴포넌트 스타일링 규격 및 아키텍처 (shadcn/ui × Tailwind CSS)
 
-1. **Button (shadcn/ui `<Button />`)**:
+1. **스타일링 아키텍처: 100% Tailwind CSS 통일 및 CSS Modules 전면 배제**:
+   - **CSS Modules(`.module.css`) 사용 금지**: 스타일 파편화를 방지하고 디자인 토큰의 단일 출처(Single Source of Truth)를 유지하기 위해 CSS Modules 및 임의의 인라인 `style` 속성 사용을 전면 배제합니다.
+   - 모든 레이아웃, 컬러, 타이포그래피, 트랜지션은 **Tailwind CSS (CSS-first / utility-first)** 클래스로 일관되게 작성합니다.
+   - 테슬라 트랜지션 타이밍은 전역 유틸리티 클래스(`.transition-tesla`)로 통일하여 사용합니다.
+
+2. **shadcn/ui 기반 컴포넌트 아키텍처 및 재사용성 (Component Reusability)**:
+   - 본 페이지의 모든 핵심 UI 요소는 **[shadcn/ui](https://ui.shadcn.com/)** 프리미티브 컴포넌트를 기반으로 제작하여 프로젝트 전반에서 독립적으로 재사용할 수 있도록 설계합니다.
+   - **Button (`@/components/ui/button`)**: CVA(Class Variance Authority)를 통해 테슬라 규격(`primary`, `secondary`, `sublink`) variant를 내장하여 재사용.
+   - **Avatar (`@/components/ui/avatar`)**: 프로필 아바타 및 이니셜 폴백 처리를 담당하는 재사용 컴포넌트.
+   - **Badge (`@/components/ui/badge`)**: 링크 카드의 상태 및 태그(`Featured`, `Open Source` 등)를 표시하는 독립 컴포넌트.
+   - **Card (`@/components/ui/card`)**: 링크 리스트 및 프로필 정보 컨테이너의 표준 골격.
+
+3. **Button 상세 규격 (shadcn/ui `<Button />`)**:
    - **모서리 반경**: `rounded-[4px]` (barely-rounded rectangle) — 둥근 필(Pill) 형태가 아닌 정밀하게 가공된 엔지니어링 미학 적용
-   - **크기**: 최소 높이 `40px`, 모바일/데스크톱 모두 명확한 터치 타겟 보장
+   - **크기**: 최소 높이 `40px` (카드형 버튼은 `min-h-[52px]`), 모바일/데스크톱 모두 명확한 터치 타겟 보장
    - **Primary Variant**: 배경 `bg-[#3E6AE1]`, 글자 `text-white`, 호버 시 미세한 명도 저하(`hover:bg-[#345ac2]`)
    - **Secondary Variant**: 배경 `bg-[#F4F4F4]`, 글자 `text-[#393C41]`, 호버 시 `hover:bg-[#EAEAEA]`
-   - **Ghost/Link Variant**: 배경 없음, 글자 `text-[#5C5E62]`, 호버 시 `text-[#171A20]` 밑줄 전환
-2. **트랜지션 (Universal Transition)**:
+   - **Sublink Variant**: 배경 없음, 글자 `text-[#5C5E62]`, 호버 시 `text-[#171A20]` 밑줄 전환
+4. **트랜지션 (Universal Transition)**:
    - 모든 인터랙티브 상태 변화는 **`0.33s cubic-bezier(0.5, 0, 0, 0.75)`**의 테슬라 고유 타이밍 적용 (`transition-tesla`)
    - 크기 확대(scale)나 위치 이동(translate) 같은 물리적 왜곡 애니메이션을 금지하고, 부드러운 색상/투명도 전환만 적용
-3. **Elevation & Depth (그림자 완전 배제)**:
+5. **Elevation & Depth (그림자 완전 배제)**:
    - **Level 0 (Flat)**: 그림자 없음 (`shadow-none`), 테두리 없음. 기본 상태
    - **Level 1 (Frost)**: 반투명 글래스(`rgba(255, 255, 255, 0.75)`) + 블러(`backdrop-blur-md`)를 통한 레이어 분리
-4. **Persistent Bottom Bar (Tesla "Ask a Question" Bar 컨셉)**:
+6. **Persistent Bottom Bar (Tesla "Ask a Question" Bar 컨셉)**:
    - 화면 하단에 sticky로 고정되는 화이트 바 (`border-t border-[#EEEEEE]`)
    - 좌측: 문의 유도 문구 및 아이콘 / 우측: 이메일 링크 및 브랜드 표기
 
@@ -84,9 +96,11 @@
 
 | 구분 | Do (권장) | Don't (금지) |
 | :--- | :--- | :--- |
+| **스타일링** | **100% Tailwind CSS 통일**, shadcn/ui 컴포넌트 재사용 | **CSS Modules(`.module.css`)**, 임의의 인라인 `style={{ ... }}` |
+| **컴포넌트** | shadcn/ui 기반 커스텀 프리미티브(`button`, `avatar`, `badge`) 활용 | 디자인 시스템과 무관한 외부 서드파티 위젯 무분별한 도입 |
 | **컬러** | 모노크롬 베이스 + Primary CTA에만 Electric Blue (`#3E6AE1`) 사용 | 버튼마다 알록달록한 다채로운 색상 사용 |
 | **장식** | 순수한 화이트 여백과 정갈한 텍스트로 컨텐츠 강조 | 드롭 섀도우, 네온 글로우, 비비드 스티커, 격자 도트 배경 |
-| **버튼** | 4px 모서리 반경, 40px 높이, 0.33s 색상 전환 | 둥근 알약형(Pill, `rounded-full`), 클릭 시 튕기는 bounce 효과 |
+| **버튼** | 4px 모서리 반경, 40px 이상 높이, 0.33s 색상 전환 | 둥근 알약형(Pill, `rounded-full`), 클릭 시 튕기는 bounce 효과 |
 | **애니메이션** | 0.33s cubic-bezier 기반의 우아하고 절제된 색상 페이드 | scale-105 스케일업, translate 이동 등 과장된 모션 |
 | **레이아웃** | 중앙 정렬된 클린 뷰포트 레이아웃 (최대 480px) | 윈도우 창 탑바, 장식용 닫기/최소화 버튼 등 레트로 OS 요소 |
 
@@ -185,6 +199,8 @@ flowchart TD
 
 ## 6. Zustand 스토어 및 데이터 모델 명세
 
+### 6.1 TypeScript 인터페이스
+
 ```typescript
 export interface LinkItem {
   id: string;
@@ -193,6 +209,9 @@ export interface LinkItem {
   isActive: boolean;
   order: number;
   variant?: "primary" | "secondary" | "sublink"; // 테슬라 버튼 계층
+  description?: string;                          // 부가 설명
+  badge?: string;                                // 배지 (Featured, Open Source 등)
+  category?: "main" | "project" | "blog" | "contact"; // 카테고리 분류
 }
 
 export interface SocialLink {
@@ -223,7 +242,7 @@ export interface ProfileData {
 }
 ```
 
-### 초기 Mock 데이터 (테슬라 테마 기본값)
+### 6.2 초기 Mock 데이터 (테슬라 테마 기본값 및 실무형 더미 데이터)
 
 ```typescript
 export const initialProfileData: ProfileData = {
@@ -247,32 +266,193 @@ export const initialProfileData: ProfileData = {
     { platform: "email", url: "mailto:a0507072@gmail.com" },
   ],
   links: [
+    // 1. 핵심 액션 (Signature Primary CTA)
     {
-      id: "1",
-      title: "이메일 보내기",
+      id: "link-1",
+      title: "1:1 커피챗 & 프로젝트 협업 문의",
+      description: "개발 외주, 기술 멘토링, 커피챗 일정을 간편하게 예약하세요.",
       url: "https://mail.google.com/mail/?view=cm&fs=1&to=a0507072@gmail.com",
       isActive: true,
       order: 1,
       variant: "primary",
+      badge: "Featured",
+      category: "contact",
     },
+
+    // 2. 대표 프로젝트 (Secondary CTA)
     {
-      id: "2",
-      title: "GitHub 보기",
-      url: "https://github.com/huiwon77",
+      id: "link-2",
+      title: "MyLink: 테슬라 감성 링크트리 클론 서비스",
+      description: "Next.js 16, React 19, Tailwind v4 기반 미니멀 프로필 링크 서비스",
+      url: "https://github.com/huiwon77/my-link-kw",
       isActive: true,
       order: 2,
       variant: "secondary",
+      badge: "Open Source",
+      category: "project",
     },
     {
-      id: "3",
+      id: "link-3",
+      title: "온라인 이러닝 플랫폼 (E-Learning LMS)",
+      description: "강의 스트리밍 및 학습 진도율 관리 대시보드 웹 애플리케이션",
+      url: "https://demo.example.com/elearning",
+      isActive: true,
+      order: 3,
+      variant: "secondary",
+      category: "project",
+    },
+
+    // 3. 기술 블로그 & 아티클 (Secondary)
+    {
+      id: "link-4",
+      title: "개발 블로그: 테슬라 디자인 시스템 분석기",
+      description: "극단적 절제미(Radical Subtraction)를 웹 UI에 녹여내는 방법",
+      url: "https://velog.io/@example/tesla-design-system",
+      isActive: true,
+      order: 4,
+      variant: "secondary",
+      category: "blog",
+    },
+    {
+      id: "link-5",
+      title: "노션(Notion) 이력서 & 포트폴리오 상세",
+      description: "학력, 기술 스택, 프로젝트 상세 회고 및 이력 정리",
+      url: "https://notion.so/example/resume",
+      isActive: true,
+      order: 5,
+      variant: "secondary",
+      category: "main",
+    },
+
+    // 4. 네트워킹 & 서브링크 (Sublink)
+    {
+      id: "link-6",
+      title: "LinkedIn 프로필 바로가기",
+      url: "https://linkedin.com/in/example",
+      isActive: true,
+      order: 6,
+      variant: "sublink",
+      category: "contact",
+    },
+    {
+      id: "link-7",
       title: "프로필 링크 복사하기",
       url: "#copy",
       isActive: true,
-      order: 3,
+      order: 7,
       variant: "sublink",
+      category: "main",
+    },
+
+    // 5. 비활성화 예시 (isActive: false)
+    {
+      id: "link-8",
+      title: "2026 회고록 (준비 중)",
+      description: "한 해 동안의 성장과 도전 회고",
+      url: "https://blog.example.com/2026-review",
+      isActive: false,
+      order: 8,
+      variant: "secondary",
+      badge: "Soon",
+      category: "blog",
     },
   ],
 };
+```
+
+### 6.3 백엔드 Mock API 및 JSON 규격 (Mock API Envelope)
+
+```json
+{
+  "status": "success",
+  "statusCode": 200,
+  "message": "링크 목록 조회가 완료되었습니다.",
+  "data": {
+    "profile": {
+      "username": "tesla_creator",
+      "displayName": "정희원 (Huiwon Jung)",
+      "bio": "기술과 인터페이스의 극단적 절제를 지향하는 프론트엔드 엔지니어입니다.",
+      "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300"
+    },
+    "links": [
+      {
+        "id": "link-1",
+        "title": "1:1 커피챗 & 프로젝트 협업 문의",
+        "description": "개발 외주, 기술 멘토링, 커피챗 일정을 간편하게 예약하세요.",
+        "url": "https://mail.google.com/mail/?view=cm&fs=1&to=a0507072@gmail.com",
+        "isActive": true,
+        "order": 1,
+        "variant": "primary",
+        "badge": "Featured",
+        "category": "contact"
+      },
+      {
+        "id": "link-2",
+        "title": "MyLink: 테슬라 감성 링크트리 클론 서비스",
+        "description": "Next.js 16, React 19, Tailwind v4 기반 미니멀 프로필 링크 서비스",
+        "url": "https://github.com/huiwon77/my-link-kw",
+        "isActive": true,
+        "order": 2,
+        "variant": "secondary",
+        "badge": "Open Source",
+        "category": "project"
+      },
+      {
+        "id": "link-3",
+        "title": "온라인 이러닝 플랫폼 (E-Learning LMS)",
+        "description": "강의 스트리밍 및 학습 진도율 관리 대시보드 웹 애플리케이션",
+        "url": "https://demo.example.com/elearning",
+        "isActive": true,
+        "order": 3,
+        "variant": "secondary",
+        "category": "project"
+      },
+      {
+        "id": "link-4",
+        "title": "개발 블로그: 테슬라 디자인 시스템 분석기",
+        "description": "극단적 절제미(Radical Subtraction)를 웹 UI에 녹여내는 방법",
+        "url": "https://velog.io/@example/tesla-design-system",
+        "isActive": true,
+        "order": 4,
+        "variant": "secondary",
+        "category": "blog"
+      },
+      {
+        "id": "link-5",
+        "title": "노션(Notion) 이력서 & 포트폴리오 상세",
+        "description": "학력, 기술 스택, 프로젝트 상세 회고 및 이력 정리",
+        "url": "https://notion.so/example/resume",
+        "isActive": true,
+        "order": 5,
+        "variant": "secondary",
+        "category": "main"
+      },
+      {
+        "id": "link-6",
+        "title": "LinkedIn 프로필 바로가기",
+        "url": "https://linkedin.com/in/example",
+        "isActive": true,
+        "order": 6,
+        "variant": "sublink",
+        "category": "contact"
+      },
+      {
+        "id": "link-7",
+        "title": "프로필 링크 복사하기",
+        "url": "#copy",
+        "isActive": true,
+        "order": 7,
+        "variant": "sublink",
+        "category": "main"
+      }
+    ]
+  },
+  "meta": {
+    "totalCount": 8,
+    "activeCount": 7,
+    "timestamp": "2026-11-23T21:15:00Z"
+  }
+}
 ```
 
 ---
