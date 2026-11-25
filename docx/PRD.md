@@ -195,6 +195,22 @@ flowchart TD
   - 좌측: 문의 안내 문구 및 아이콘 (`Silver Fog #8E8E8E`)
   - 우측: 크리에이터 문의 이메일(`Electric Blue #3E6AE1`) 및 테슬라 디자인 시스템 브랜딩 표기
 
+### 5.5 링크 추가 다이얼로그 (Add Link Dialog - Local State)
+- **컴포넌트**: shadcn/ui `<Dialog />`, `<Input />`, `<Label />`, `<Button />`
+- **동작 및 영속화**:
+  - 서버 없이 브라우저 로컬 상태(`useProfileStore`)에서 직접 링크를 생성하고 `LocalStorage(mylink-storage)`에 자동 영속화
+  - 추가 즉시 화면의 링크 목록에 실시간 렌더링되며, 새로고침 후에도 유지됨
+- **입력 폼 구성**:
+  - `title` (필수): 링크 제목
+  - `url` (필수): 링크 주소 (프로토콜 누락 시 `https://` 자동 보정)
+  - `description` (선택): 부가 설명
+  - `variant` (선택): 테슬라 버튼 계층 (`primary` | `secondary` | `sublink`)
+  - `badge` (선택): 태그 문구 (`NEW`, `Featured`, `Open Source` 등)
+  - `category` (선택): 카테고리 태그 (`project`, `main`, `blog`, `contact`)
+- **디자인 규격**:
+  - `rounded-[4px]`, 그림자 배제(`shadow-none`), `0.33s cubic-bezier` 트랜지션
+  - 확인 버튼: Electric Blue (`#3E6AE1`), 취소 버튼: Light Ash (`#F4F4F4`)
+
 ---
 
 ## 6. Zustand 스토어 및 데이터 모델 명세

@@ -2,24 +2,18 @@
 
 import { LinkItem } from "@/types";
 import { LinkItemCard } from "./LinkItemCard";
+import { AddLinkDialog } from "./AddLinkDialog";
 
 interface LinkListProps {
   links: LinkItem[];
+  showAddButton?: boolean;
 }
 
-export function LinkList({ links }: LinkListProps) {
+export function LinkList({ links, showAddButton = true }: LinkListProps) {
   // 1. 활성화된 링크만 오더 순으로 정렬
   const activeLinks = [...links]
     .filter((link) => link.isActive)
     .sort((a, b) => a.order - b.order);
-
-  if (activeLinks.length === 0) {
-    return (
-      <div className="w-full py-12 text-center text-[#8E8E8E] text-[13px]">
-        등록된 링크가 없습니다.
-      </div>
-    );
-  }
 
   // 2. 메인/프로젝트/블로그 등 버튼형 링크와 서브링크 분리 정돈
   const buttonLinks = activeLinks.filter((l) => l.variant !== "sublink");
@@ -31,6 +25,13 @@ export function LinkList({ links }: LinkListProps) {
       {buttonLinks.map((link) => (
         <LinkItemCard key={link.id} link={link} />
       ))}
+
+      {/* 새 링크 추가 다이얼로그 트리거 버튼 */}
+      {showAddButton && (
+        <div className="pt-1">
+          <AddLinkDialog />
+        </div>
+      )}
 
       {/* Sublinks (프로필 복사, LinkedIn 등) */}
       {sublinks.length > 0 && (

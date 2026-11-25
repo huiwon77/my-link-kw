@@ -6,9 +6,10 @@ import { ProfileHeader } from "./ProfileHeader";
 import { SocialRibbon } from "./SocialRibbon";
 import { LinkList } from "./LinkList";
 import { PersistentBottomBar } from "./PersistentBottomBar";
+import { AddLinkDialog } from "./AddLinkDialog";
 import { initialProfileData } from "@/data/initialData";
 import { Button } from "@/components/ui/button";
-import { Share2, Check } from "lucide-react";
+import { Share2, Check, Plus } from "lucide-react";
 
 export function ProfileView() {
   const [mounted, setMounted] = useState(false);
@@ -47,29 +48,46 @@ export function ProfileView() {
           <span className="font-medium text-[12px] tracking-[0.2em] text-[#171A20] select-none uppercase">
             M Y L I N K
           </span>
-          <Button
-            onClick={handleShare}
-            variant="ghost"
-            size="sm"
-            className="text-[13px] font-medium text-[#5C5E62] hover:text-[#171A20] hover:bg-black/5 rounded-[4px] h-8 px-2.5 gap-1.5 transition-tesla"
-          >
-            {copied ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-[#3E6AE1]" />
-                <span className="text-[#3E6AE1]">복사됨</span>
-              </>
-            ) : (
-              <>
-                <Share2 className="w-3.5 h-3.5 text-[#5C5E62]" />
-                <span>공유</span>
-              </>
-            )}
-          </Button>
+          <div className="flex items-center gap-1">
+            {/* 상단 빠른 링크 추가 다이얼로그 버튼 */}
+            <AddLinkDialog
+              trigger={
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-[13px] font-medium text-[#5C5E62] hover:text-[#171A20] hover:bg-black/5 rounded-[4px] h-8 px-2 gap-1 transition-tesla"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>추가</span>
+                </Button>
+              }
+            />
+
+            {/* 공유 버튼 */}
+            <Button
+              onClick={handleShare}
+              variant="ghost"
+              size="sm"
+              className="text-[13px] font-medium text-[#5C5E62] hover:text-[#171A20] hover:bg-black/5 rounded-[4px] h-8 px-2 gap-1.5 transition-tesla"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-[#3E6AE1]" />
+                  <span className="text-[#3E6AE1]">복사됨</span>
+                </>
+              ) : (
+                <>
+                  <Share2 className="w-3.5 h-3.5 text-[#5C5E62]" />
+                  <span>공유</span>
+                </>
+              )}
+            </Button>
+          </div>
         </div>
       </header>
 
       {/* 2. Main Viewport Container (Centered max-w-[480px], 100% Tailwind CSS) */}
-      <main className="flex-1 w-full max-w-[480px] mx-auto px-5 pb-16 flex flex-col items-center">
+      <main className="flex-1 w-full max-w-[480px] mx-auto px-5 pb-28 sm:pb-32 flex flex-col items-center">
         {/* Profile Avatar, Title & Bio */}
         <ProfileHeader
           displayName={profile.displayName}
@@ -81,9 +99,9 @@ export function ProfileView() {
         {/* Monochrome Social Ribbon */}
         <SocialRibbon socials={profile.socials} />
 
-        {/* Links List (Primary, Secondary, Sublinks) */}
+        {/* Links List (Primary, Secondary, Sublinks, + 새 링크 추가) */}
         <div className="w-full mt-2">
-          <LinkList links={profile.links} />
+          <LinkList links={profile.links} showAddButton={true} />
         </div>
       </main>
 
